@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ART_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230308092717_InitializedMasterBRModel")]
-    partial class InitializedMasterBRModel
+    [Migration("20230311040519_AddedNoOfPositions")]
+    partial class AddedNoOfPositions
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,6 +27,11 @@ namespace ART_App.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AccountId")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("nvarchar(max)")
+                        .HasComputedColumnSql("CONCAT('ACC',RIGHT('000' + CAST(Id AS VARCHAR(3)), 3))");
 
                     b.Property<string>("AccountName")
                         .IsRequired()
@@ -47,10 +52,16 @@ namespace ART_App.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
+                    b.Property<string>("CandidateId")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("nvarchar(max)")
+                        .HasComputedColumnSql("CONCAT('CA',RIGHT('000' + CAST(Id AS VARCHAR(3)), 3))");
+
                     b.Property<string>("CandidateName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Client_Eval_Date")
+                    b.Property<DateTime?>("Client_Eval_Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Client_Eval_Result")
@@ -68,7 +79,7 @@ namespace ART_App.Migrations
                     b.Property<string>("JobDescription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("L1_Eval_Date")
+                    b.Property<DateTime?>("L1_Eval_Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("L1_Eval_Result")
@@ -77,16 +88,16 @@ namespace ART_App.Migrations
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Manager_Eval_Date")
+                    b.Property<DateTime?>("Manager_Eval_Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Manager_Eval_Result")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProjectsBRModelId")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ScreeningDate")
+                    b.Property<DateTime?>("ScreeningDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ScreeningResult")
@@ -103,7 +114,7 @@ namespace ART_App.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectsBRModelId");
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("MasterBR");
                 });
@@ -115,17 +126,28 @@ namespace ART_App.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccountsBRModelId")
+                    b.Property<int>("AccountId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ApprovedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Grade")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("JobDescription")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("No_Of_Positions")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProjectId")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("nvarchar(max)")
+                        .HasComputedColumnSql("CONCAT('PR',RIGHT('000' + CAST(Id AS VARCHAR(3)), 3))");
 
                     b.Property<string>("ProjectName")
                         .IsRequired()
@@ -139,16 +161,55 @@ namespace ART_App.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountsBRModelId");
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("ProjectsBR");
+                });
+
+            modelBuilder.Entity("ART_App.Models.SignUpModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmpId")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("nvarchar(max)")
+                        .HasComputedColumnSql("CONCAT('ICS',RIGHT('000' + CAST(Id AS VARCHAR(3)), 3))");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SignUpModel");
                 });
 
             modelBuilder.Entity("ART_App.Models.MasterBRModel", b =>
                 {
                     b.HasOne("ART_App.Models.ProjectsBRModel", "ProjectsBRModel")
                         .WithMany()
-                        .HasForeignKey("ProjectsBRModelId")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -159,11 +220,24 @@ namespace ART_App.Migrations
                 {
                     b.HasOne("ART_App.Models.AccountsBRModel", "AccountsBRModel")
                         .WithMany()
-                        .HasForeignKey("AccountsBRModelId")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ART_App.Models.SignUpModel", "SignUpModel")
+                        .WithMany("ProjectsBRModels")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("AccountsBRModel");
+
+                    b.Navigation("SignUpModel");
+                });
+
+            modelBuilder.Entity("ART_App.Models.SignUpModel", b =>
+                {
+                    b.Navigation("ProjectsBRModels");
                 });
 #pragma warning restore 612, 618
         }

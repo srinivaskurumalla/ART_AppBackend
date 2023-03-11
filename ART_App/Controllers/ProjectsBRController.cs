@@ -29,7 +29,7 @@ namespace ART_App.Controllers
             }
             return NotFound();
         }
-        //Get ProjectBR By Id
+        //Get ProjectBR By Id 
         [HttpGet]
         [Route("GetProjectBRById/{id}", Name = "GetProjectBRById")]
         public async Task<IActionResult> GetProjectBRById(int id)
@@ -57,8 +57,8 @@ namespace ART_App.Controllers
         }
 
         //update ProjectBR
-        [HttpPut("UpdateprojectBR/{id}")]
-        public async Task<IActionResult> UpdateAProjectBR(int id, [FromBody] ProjectsBRModel projectsBRModel)
+        [HttpPut("UpdateProjectBR/{id}")]
+        public async Task<IActionResult> UpdateProjectBR(int id, [FromBody] ProjectsBRModel projectsBRModel)
         {
             if (ModelState.IsValid)
             {

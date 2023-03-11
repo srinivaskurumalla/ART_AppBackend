@@ -38,7 +38,7 @@ namespace ART_App.Repositories
 
         public async Task<IEnumerable<ProjectsBRModel>> GetAll()
         {
-            var allProjects = await _dbContext.ProjectsBR.ToListAsync();
+            var allProjects = await _dbContext.ProjectsBR.Include(a => a.AccountsBRModel).ToListAsync();
             return allProjects;
         }
 
@@ -58,7 +58,7 @@ namespace ART_App.Repositories
             if (projectBR != null)
             {
                 projectBR.ProjectName = obj.ProjectName;
-                projectBR.AccountsBRModelId = obj.AccountsBRModelId;
+                projectBR.AccountId = obj.AccountId;
                 projectBR.SkillSetRequired = obj.SkillSetRequired;
                 projectBR.JobDescription = obj.JobDescription;
                 projectBR.Status = obj.Status;

@@ -8,6 +8,7 @@ namespace ART_App.Models
 
         [Required]
         public string AccountName { get; set; }
+        public string AccountId { get; set; }
 
     }
 }

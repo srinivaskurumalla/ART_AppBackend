@@ -1,5 +1,6 @@
 using ART_App.Models;
 using ART_App.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,10 +10,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ART_App
@@ -36,11 +39,25 @@ namespace ART_App
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ART_App", Version = "v1" });
             });
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o =>
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["JWT:issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:SecretKey"]))
+                });
             //configuration connection string information
             services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ARTConnection")));
 
 
             //Resolve DI
+
+            //Accounts Model
+            services.AddScoped<IRepositories<SignUpModel>, AccountsRepository>();
+            services.AddScoped<IGetRepository<SignUpModel>, AccountsRepository>();
 
             //AccountsBRModel
             services.AddScoped<IRepositories<AccountsBRModel>, AccountsBRRepository>();
@@ -49,6 +66,10 @@ namespace ART_App
             //ProjectBRModel
             services.AddScoped<IRepositories<ProjectsBRModel>, ProjectsBRRepository>();
             services.AddScoped<IGetRepository<ProjectsBRModel>, ProjectsBRRepository>();
+
+            //MasterBRModel
+            services.AddScoped<IRepositories<MasterBRModel>, MasterBRRespository>();
+            services.AddScoped<IGetRepository<MasterBRModel>, MasterBRRespository>();
 
         }
 

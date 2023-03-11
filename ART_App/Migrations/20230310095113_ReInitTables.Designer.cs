@@ -4,14 +4,16 @@ using ART_App.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ART_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230310095113_ReInitTables")]
+    partial class ReInitTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +61,7 @@ namespace ART_App.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Client_Eval_Date")
+                    b.Property<DateTime>("Client_Eval_Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Client_Eval_Result")
@@ -77,7 +79,7 @@ namespace ART_App.Migrations
                     b.Property<string>("JobDescription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("L1_Eval_Date")
+                    b.Property<DateTime>("L1_Eval_Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("L1_Eval_Result")
@@ -86,7 +88,7 @@ namespace ART_App.Migrations
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Manager_Eval_Date")
+                    b.Property<DateTime>("Manager_Eval_Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Manager_Eval_Result")
@@ -95,7 +97,7 @@ namespace ART_App.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("ScreeningDate")
+                    b.Property<DateTime>("ScreeningDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ScreeningResult")
@@ -130,7 +132,7 @@ namespace ART_App.Migrations
                     b.Property<DateTime>("ApprovedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("EmployeelId")
                         .HasColumnType("int");
 
                     b.Property<string>("Grade")
@@ -138,9 +140,6 @@ namespace ART_App.Migrations
 
                     b.Property<string>("JobDescription")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("No_Of_Positions")
-                        .HasColumnType("int");
 
                     b.Property<string>("ProjectId")
                         .ValueGeneratedOnAddOrUpdate()
@@ -161,7 +160,7 @@ namespace ART_App.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeelId");
 
                     b.ToTable("ProjectsBR");
                 });
@@ -224,7 +223,7 @@ namespace ART_App.Migrations
 
                     b.HasOne("ART_App.Models.SignUpModel", "SignUpModel")
                         .WithMany("ProjectsBRModels")
-                        .HasForeignKey("EmployeeId")
+                        .HasForeignKey("EmployeelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
