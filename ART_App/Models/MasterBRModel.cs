@@ -16,6 +16,10 @@ namespace ART_App.Models
         /*  public int AccountsBRModelId { get; set; }
           public AccountsBRModel AccountsBRModel { get; set; }
   */
+
+        [ForeignKey("SignUpModel")]
+        public int EmployeeId { get; set; }
+        public SignUpModel SignUpModel { get; set; }
         [Required]
         public string CandidateName { get; set; }
         public string Int_Ext { get; set; }
@@ -40,6 +44,9 @@ namespace ART_App.Models
 
         public string Status { get; set; }
         public string Eval_Comments { get; set; }
+
+        public string Added_Modified_By { get; set; }
+
 
     }
 }

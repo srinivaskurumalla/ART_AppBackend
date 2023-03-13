@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ART_App.Models
 {
+    [Index(nameof(ProjectName), IsUnique = true)]
     public class ProjectsBRModel
     {
         public int Id { get; set; }
@@ -21,17 +23,10 @@ namespace ART_App.Models
         public int EmployeeId { get; set; }
         public SignUpModel SignUpModel { get; set; }
 
-        public int No_Of_Positions { get; set; }
+        public int Total_Positions { get; set; }
 
-        public DateTime ApprovedDate { get; set; }
-
-        public string Grade { get; set; }
-        public string SkillSetRequired { get; set; }
-
-        public string Status { get; set; }
-        public string JobDescription { get; set; }
-
-
+      
+        public string Added_Modified_By { get; set; }
 
 
     }

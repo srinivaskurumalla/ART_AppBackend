@@ -32,6 +32,7 @@ namespace ART_App.Models
 
         public DbSet<MasterBRModel> MasterBR { get; set; }
         public DbSet<SignUpModel> SignUpModel { get; set; }
+        public DbSet<DomainsModel> DomainsModel { get; set; }
 
     }
 }

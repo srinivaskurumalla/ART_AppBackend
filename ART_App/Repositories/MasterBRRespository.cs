@@ -58,6 +58,7 @@ namespace ART_App.Repositories
             if(masterBR != null)
             {
                 masterBR.ProjectId = obj.ProjectId;
+                masterBR.EmployeeId= obj.EmployeeId;
                 masterBR.CandidateName = obj.CandidateName;
                 masterBR.Int_Ext = obj.Int_Ext;
                 masterBR.Location = obj.Location;
@@ -75,6 +76,7 @@ namespace ART_App.Repositories
                 masterBR.Manager_Eval_Result = obj.Manager_Eval_Result;
                 masterBR.Status = obj.Status;
                 masterBR.Eval_Comments += obj.Eval_Comments + "\n";
+                masterBR.Added_Modified_By = obj.Added_Modified_By;
 
                 _dbContext.Update(masterBR);
                 await _dbContext.SaveChangesAsync();

@@ -4,14 +4,16 @@ using ART_App.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ART_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230312033039_DomainModel1")]
+    partial class DomainModel1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,13 +34,10 @@ namespace ART_App.Migrations
                         .HasComputedColumnSql("CONCAT('ACC',RIGHT('000' + CAST(Id AS VARCHAR(3)), 3))");
 
                     b.Property<string>("AccountName")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountName")
-                        .IsUnique()
-                        .HasFilter("[AccountName] IS NOT NULL");
 
                     b.ToTable("AccountsBR");
                 });
@@ -50,6 +49,9 @@ namespace ART_App.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Added_Modified_By")
                         .HasColumnType("nvarchar(max)");
 
@@ -58,10 +60,6 @@ namespace ART_App.Migrations
 
                     b.Property<DateTime>("ApprovedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("DomainName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -78,6 +76,9 @@ namespace ART_App.Migrations
                     b.Property<int>("ProjectFkId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ProjectId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ProjectName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -89,6 +90,8 @@ namespace ART_App.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
 
                     b.HasIndex("EmployeeId");
 
@@ -198,6 +201,9 @@ namespace ART_App.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("No_Of_Positions")
+                        .HasColumnType("int");
+
                     b.Property<string>("ProjectId")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("nvarchar(max)")
@@ -205,19 +211,13 @@ namespace ART_App.Migrations
 
                     b.Property<string>("ProjectName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Total_Positions")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
                     b.HasIndex("EmployeeId");
-
-                    b.HasIndex("ProjectName")
-                        .IsUnique();
 
                     b.ToTable("ProjectsBR");
                 });
@@ -261,6 +261,12 @@ namespace ART_App.Migrations
 
             modelBuilder.Entity("ART_App.Models.DomainsModel", b =>
                 {
+                    b.HasOne("ART_App.Models.AccountsBRModel", "AccountsBRModel")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ART_App.Models.SignUpModel", "SignUpModel")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
@@ -272,6 +278,8 @@ namespace ART_App.Migrations
                         .HasForeignKey("ProjectFkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AccountsBRModel");
 
                     b.Navigation("ProjectsBRModel");
 

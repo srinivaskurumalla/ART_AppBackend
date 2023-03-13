@@ -1,5 +1,7 @@
 ﻿using ART_App.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +21,9 @@ namespace ART_App.Repositories
         {
             if (obj != null)
             {
+              //  obj.Age = (int)(DateTime.Now - obj.ApprovedDate).TotalDays;
+              int total = _dbContext.DomainsModel.Where(d => d.ProjectFkId == obj.Id).Where(d => d.No_Of_Positions >= 0).Sum(d => d.No_Of_Positions);
+                obj.Total_Positions = total;
                 _dbContext.ProjectsBR.Add(obj);
                 await _dbContext.SaveChangesAsync();
             }
@@ -38,7 +43,9 @@ namespace ART_App.Repositories
 
         public async Task<IEnumerable<ProjectsBRModel>> GetAll()
         {
+
             var allProjects = await _dbContext.ProjectsBR.Include(a => a.AccountsBRModel).ToListAsync();
+
             return allProjects;
         }
 
@@ -59,10 +66,11 @@ namespace ART_App.Repositories
             {
                 projectBR.ProjectName = obj.ProjectName;
                 projectBR.AccountId = obj.AccountId;
-                projectBR.SkillSetRequired = obj.SkillSetRequired;
+              /*  projectBR.SkillSetRequired = obj.SkillSetRequired;
                 projectBR.JobDescription = obj.JobDescription;
                 projectBR.Status = obj.Status;
-                projectBR.Grade= obj.Grade;
+                projectBR.Grade= obj.Grade;*/
+                projectBR.Added_Modified_By= obj.Added_Modified_By;
 
                
 
@@ -72,6 +80,15 @@ namespace ART_App.Repositories
                 return projectBR;
             }
             return null;
+        }
+
+      
+        public void UpdateProjectBr(ProjectsBRModel obj)
+        {
+            int total = _dbContext.DomainsModel.Where(d => d.ProjectFkId == obj.Id).Where(d => d.No_Of_Positions >= 0).Sum(d => d.No_Of_Positions);
+            ProjectsBRModel projects = new();
+            projects.Total_Positions = total;
+
         }
     }
 }

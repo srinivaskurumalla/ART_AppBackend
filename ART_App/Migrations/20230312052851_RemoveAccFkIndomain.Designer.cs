@@ -4,14 +4,16 @@ using ART_App.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ART_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230312052851_RemoveAccFkIndomain")]
+    partial class RemoveAccFkIndomain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +63,7 @@ namespace ART_App.Migrations
 
                     b.Property<string>("DomainName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -78,6 +80,9 @@ namespace ART_App.Migrations
                     b.Property<int>("ProjectFkId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ProjectId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ProjectName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -89,6 +94,9 @@ namespace ART_App.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DomainName")
+                        .IsUnique();
 
                     b.HasIndex("EmployeeId");
 
@@ -198,6 +206,9 @@ namespace ART_App.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("No_Of_Positions")
+                        .HasColumnType("int");
+
                     b.Property<string>("ProjectId")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("nvarchar(max)")
@@ -206,9 +217,6 @@ namespace ART_App.Migrations
                     b.Property<string>("ProjectName")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Total_Positions")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

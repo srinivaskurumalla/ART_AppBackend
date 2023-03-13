@@ -2,6 +2,8 @@
 using ART_App.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ART_App.Controllers
@@ -12,6 +14,7 @@ namespace ART_App.Controllers
     {
         private readonly IRepositories<ProjectsBRModel> _projectRepository;
         private readonly IGetRepository<ProjectsBRModel> _getRepository;
+        private readonly ApplicationDbContext _dbContext;
 
         public ProjectsBRController(IRepositories<ProjectsBRModel> projectRepository, IGetRepository<ProjectsBRModel> getRepository)
         {
@@ -85,5 +88,7 @@ namespace ART_App.Controllers
             return NotFound("ProjectBR with id " + id + " is not available");
         }
 
+
+     
     }
 }

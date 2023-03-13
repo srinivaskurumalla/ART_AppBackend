@@ -67,6 +67,10 @@ namespace ART_App
             services.AddScoped<IRepositories<ProjectsBRModel>, ProjectsBRRepository>();
             services.AddScoped<IGetRepository<ProjectsBRModel>, ProjectsBRRepository>();
 
+            //Domain Model
+            services.AddScoped<IRepositories<DomainsModel>, DomainRepository>();
+            services.AddScoped<IGetRepository<DomainsModel>, DomainRepository>();
+
             //MasterBRModel
             services.AddScoped<IRepositories<MasterBRModel>, MasterBRRespository>();
             services.AddScoped<IGetRepository<MasterBRModel>, MasterBRRespository>();
