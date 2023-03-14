@@ -23,12 +23,13 @@ namespace ART_App.Controllers
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _dbContext;
 
-     
-        public AccountsController(IConfiguration configuration, ApplicationDbContext dbContext)
+        private readonly IGetRepository<SignUpModel> _getRepository;
+
+        public AccountsController(IConfiguration configuration, ApplicationDbContext dbContext, IGetRepository<SignUpModel> getRepository)
         {
             _configuration = configuration;
             _dbContext = dbContext;
-           
+            _getRepository = getRepository;
         }
 
         [HttpPost("Register")]
@@ -137,5 +138,16 @@ namespace ART_App.Controllers
             return null;
         }
 
+
+        [HttpGet("GetAllEmployees")]
+        public async Task<IActionResult> GetAllMasterBRs()
+        {
+            var allEmps = await _getRepository.GetAll();
+            if (allEmps != null)
+            {
+                return Ok(allEmps);
+            }
+            return NotFound();
+        }
     }
 }

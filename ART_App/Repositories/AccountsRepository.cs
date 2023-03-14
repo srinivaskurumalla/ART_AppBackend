@@ -8,6 +8,12 @@ namespace ART_App.Repositories
     public class AccountsRepository : IGetRepository<SignUpModel>, IRepositories<SignUpModel>
     {
         private readonly ApplicationDbContext _dbContext;
+
+        public AccountsRepository(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public async Task Create(SignUpModel obj)
         {
             if (obj != null)
