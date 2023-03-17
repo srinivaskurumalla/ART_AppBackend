@@ -4,14 +4,16 @@ using ART_App.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ART_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230316145102_EvaluationTable")]
+    partial class EvaluationTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,7 +99,7 @@ namespace ART_App.Migrations
                     b.ToTable("DomainsModel");
                 });
 
-            modelBuilder.Entity("ART_App.Models.MasterBRModel", b =>
+            modelBuilder.Entity("ART_App.Models.EvaluationModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -179,7 +181,7 @@ namespace ART_App.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("MasterBR");
+                    b.ToTable("EvaluationModel");
                 });
 
             modelBuilder.Entity("ART_App.Models.ProjectsBRModel", b =>
@@ -284,7 +286,7 @@ namespace ART_App.Migrations
                     b.Navigation("SignUpModel");
                 });
 
-            modelBuilder.Entity("ART_App.Models.MasterBRModel", b =>
+            modelBuilder.Entity("ART_App.Models.EvaluationModel", b =>
                 {
                     b.HasOne("ART_App.Models.SignUpModel", "SignUpModel")
                         .WithMany()

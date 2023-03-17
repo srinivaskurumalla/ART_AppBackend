@@ -21,9 +21,16 @@ namespace ART_App.Repositories
         {
             if (obj != null)
             {
-              //  obj.Age = (int)(DateTime.Now - obj.ApprovedDate).TotalDays;
-              int total = _dbContext.DomainsModel.Where(d => d.ProjectFkId == obj.Id).Where(d => d.No_Of_Positions >= 0).Sum(d => d.No_Of_Positions);
+                TimeSpan? timeDiff = DateTime.Now - obj.ApproveDate;
+                if (timeDiff != null)
+                {
+                    obj.Age = (int)timeDiff.Value.TotalDays;
+                }
+                int total = _dbContext.DomainsModel.Where(d => d.ProjectFkId == obj.Id).Where(d => d.No_Of_Positions >= 0).Sum(d => d.No_Of_Positions);
                 obj.Total_Positions = total;
+
+               // obj.Age = (int)(DateTime.Now - obj.ApproveDate).to
+
                 _dbContext.ProjectsBR.Add(obj);
                 await _dbContext.SaveChangesAsync();
             }
@@ -71,9 +78,13 @@ namespace ART_App.Repositories
                 projectBR.Status = obj.Status;
                 projectBR.Grade= obj.Grade;*/
                 projectBR.Added_Modified_By= obj.Added_Modified_By;
-
-               
-
+                projectBR.ApproveDate= obj.ApproveDate;
+                TimeSpan? timeDiff = DateTime.Now - obj.ApproveDate;
+                if (timeDiff != null)
+                {
+                    projectBR.Age = (int)timeDiff.Value.TotalDays;
+                }
+                projectBR.Age = (int)timeDiff.Value.TotalDays;
                 _dbContext.Update(projectBR);
                 await _dbContext.SaveChangesAsync();
 

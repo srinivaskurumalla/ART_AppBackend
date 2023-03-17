@@ -25,7 +25,8 @@ namespace ART_App.Models
 
         public int Total_Positions { get; set; }
 
-      
+        public DateTime? ApproveDate { get; set; }
+        public int Age { get; set; }
         public string Added_Modified_By { get; set; }
 
 

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace ART_App.Repositories
 {
-    public class MasterBRRespository : IRepositories<MasterBRModel>, IGetRepository<MasterBRModel>
+    public class EvaluationRespository : IRepositories<MasterBRModel>, IGetRepository<MasterBRModel>
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public MasterBRRespository(ApplicationDbContext dbContext)
+        public EvaluationRespository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
